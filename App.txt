@@ -1,0 +1,178 @@
+import React, { useState } from 'react';
+import { Languages, Download, Sparkles, ChevronDown } from 'lucide-react';
+
+type Language = 'English' | 'Spanish' | 'French' | 'German';
+
+interface ResumeData {
+  fullName: string;
+  title: string;
+  summary: string;
+  experience: string;
+  education: string;
+  skills: string;
+}
+
+function App() {
+  const [language, setLanguage] = useState<Language>('English');
+  const [resumeData, setResumeData] = useState<ResumeData>({
+    fullName: '',
+    title: '',
+    summary: '',
+    experience: '',
+    education: '',
+    skills: ''
+  });
+
+  const handleInputChange = (field: keyof ResumeData) => (
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
+    setResumeData(prev => ({ ...prev, [field]: e.target.value }));
+  };
+
+  const generateAIContent = () => {
+    // This would connect to an AI service in production
+    alert('In a production environment, this would generate AI-enhanced content based on your input.');
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-800 flex items-center gap-2">
+            <Sparkles className="text-indigo-600" />
+            AI Resume Builder
+          </h1>
+          
+          <div className="flex items-center gap-4">
+            <div className="relative">
+              <select
+                value={language}
+                onChange={(e) => setLanguage(e.target.value as Language)}
+                className="appearance-none bg-white px-4 py-2 pr-8 rounded-lg shadow-sm border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              >
+                <option>English</option>
+                <option>Spanish</option>
+                <option>French</option>
+                <option>German</option>
+              </select>
+              <ChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 w-4 h-4" />
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="space-y-6">
+            <div className="bg-white rounded-xl shadow-sm p-6 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                <input
+                  type="text"
+                  value={resumeData.fullName}
+                  onChange={handleInputChange('fullName')}
+                  className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  placeholder="John Doe"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Professional Title</label>
+                <input
+                  type="text"
+                  value={resumeData.title}
+                  onChange={handleInputChange('title')}
+                  className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  placeholder="Senior Software Engineer"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Professional Summary</label>
+                <textarea
+                  value={resumeData.summary}
+                  onChange={handleInputChange('summary')}
+                  className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-transparent h-32"
+                  placeholder="Brief overview of your professional background..."
+                />
+              </div>
+            </div>
+
+            <div className="bg-white rounded-xl shadow-sm p-6 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Work Experience</label>
+                <textarea
+                  value={resumeData.experience}
+                  onChange={handleInputChange('experience')}
+                  className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-transparent h-40"
+                  placeholder="List your work experience..."
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Education</label>
+                <textarea
+                  value={resumeData.education}
+                  onChange={handleInputChange('education')}
+                  className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-transparent h-32"
+                  placeholder="List your educational background..."
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Skills</label>
+                <textarea
+                  value={resumeData.skills}
+                  onChange={handleInputChange('skills')}
+                  className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-transparent h-32"
+                  placeholder="List your key skills..."
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-6">
+            <div className="bg-white rounded-xl shadow-sm p-6">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-xl font-semibold text-gray-800">Preview</h2>
+                <button
+                  onClick={() => generateAIContent()}
+                  className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+                >
+                  <Sparkles className="w-4 h-4" />
+                  Enhance with AI
+                </button>
+              </div>
+
+              <div className="prose max-w-none">
+                <h1 className="text-2xl font-bold mb-2">{resumeData.fullName || 'Your Name'}</h1>
+                <p className="text-lg text-gray-600 mb-4">{resumeData.title || 'Your Title'}</p>
+                
+                <h2 className="text-xl font-semibold mt-6 mb-2">Professional Summary</h2>
+                <p className="text-gray-700">{resumeData.summary || 'Your professional summary will appear here...'}</p>
+
+                <h2 className="text-xl font-semibold mt-6 mb-2">Experience</h2>
+                <p className="text-gray-700 whitespace-pre-line">{resumeData.experience || 'Your experience will appear here...'}</p>
+
+                <h2 className="text-xl font-semibold mt-6 mb-2">Education</h2>
+                <p className="text-gray-700 whitespace-pre-line">{resumeData.education || 'Your education will appear here...'}</p>
+
+                <h2 className="text-xl font-semibold mt-6 mb-2">Skills</h2>
+                <p className="text-gray-700 whitespace-pre-line">{resumeData.skills || 'Your skills will appear here...'}</p>
+              </div>
+
+              <div className="mt-6 pt-6 border-t">
+                <button
+                  className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                >
+                  <Download className="w-4 h-4" />
+                  Download Resume
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default App;
